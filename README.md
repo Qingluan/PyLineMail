@@ -14,7 +14,7 @@
 ## Install 
 	install mongodb ,python2.7 ,motor
 
-	install  : <a href="https://github.com/Qingluan/QmongoHelper" >mongoHelper</a>  ( this is in my github res )
+	install  : [Visit mongoHelper !](https://github.com/Qingluan/QmongoHelper )  ( this is in my github res )
 	
 	donwload this py.
 	<code>$cp email_send.py /usr/local/bin/ </code>
