@@ -40,7 +40,7 @@ def get_arguments():
         will search something from mongo db")
     parser.add_argument("-u","--user",default=None,help="this is sub argument of -s/-i ,for search/insert user ,\
         \nexample : -s/-i -u \" qingluan  xxx@gmail.com\" ")
-    parser.add_argument("-d","--delete",default=None,help="this is sub argument of -i ,for search/insert user ,\
+    parser.add_argument("-d","--delete",action="store_true",default=False,help="this is sub argument of -i ,for search/insert user ,\
         \nexample : -s -d \"[user,mail] qingluan  \" ")
     parser.add_argument("-a","--argv",default=None,help="this is sub argument of -s ,for search/insert user ,\
             \nexample : \
@@ -136,6 +136,11 @@ class Inserter(_DB):
         docu,db_str = self.get_db_dict(argv)
         return self.mongo.remove(docu,**db_str)
 
+    def delete_user(self,user):
+        return self.mongo.remove("user",**{
+                "user":user,
+            })
+
     def insert_log(self,user,to_address,subject,content,attach=False,if_sign=False):
         # print (to_address)
         mail_type = re.findall(r'@(\w+?)\.', to_address)[0]
@@ -181,22 +186,6 @@ class Searcher(_DB):
             "user":user,
             })
 
-
-
-class Contact:
-    
-    Contact = {
-    #<contact>
-        'mao' : 'maoxinhorizon@gmail.com',
-        'tong': 'wickzt@gmail.com',
-        'meng': 'mengwei607@gmail.com',
-        'zhen': '764825975@qq.com',
-
-    #<contact>
-    }   
-    @staticmethod
-    def get(key):
-        return Contact.Contact[key]
 
 
 
@@ -349,9 +338,17 @@ class MailServer:
         return text
                 
 def Log(d):
-    for i in d:
-        print "%-10s : \t\t%+40s"%(i,d[i])
+    if not d:
+        print("Not found ")
+        return 
 
+    def _Log(l):
+        for i in l:
+            print "%-10s : \t\t%+40s"%(i,d[i])
+    
+
+    [_Log(i) for i in d ]
+    
 
 if __name__ == "__main__":
     ############## test ####################
@@ -374,14 +371,18 @@ if __name__ == "__main__":
         del IN
         S = Searcher("email")
         if args.user:
-            [Log(i) for i in S.find_user(args.user) ]
+            Log(S.find_user(args.user))
             exit(0)
         print args.argv
         res = S.find(args.argv)
 
-        [ Log(i) for i in res]
+        Log(res)
         exit(0)
-
+    elif args.delete :
+        if args.user:
+            IN.delete_user(args.user)
+        else:
+            IN.delete(args.argv)
 
     import getpass
 
