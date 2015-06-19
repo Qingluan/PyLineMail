@@ -2,6 +2,14 @@ from mongoHelper import Mongo
 import re
 import getpass
 
+def test_db():
+    print("load module ok ")
+    try :
+        
+        import mongoHelper
+        print("load db module ok ")
+    except :
+        print("not installed mongoHelper , this can install by my github/Qingluan ")
 
 class _DB(object):
     oper_map = {

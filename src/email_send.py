@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: gbk -*-   
 
+
 import sys
 import argparse
 
+sys.path += ["../src"]
+sys.path += ["/usr/local/lib/python3.4/site-packages/PyLineMail/src"]
 
 from Mail import MailClient
 from Mail import MailServer
 from DB import Inserter,Searcher
+from DB import test_db
+from Mail import test_mail
 
 ## this mongodbHelper is written by Qingluan ,you can download and install in github
 
@@ -49,6 +54,8 @@ def get_arguments():
     # mail receiving function 
     parser.add_argument("-r",'--receive',default=None,help="receive from mail by use -r xxx to choose account")
 
+    parser.add_argument("--test",default=False,action="store_true",help="this is for test if ok for  installation  ")
+
     return parser.parse_args()
 
 
@@ -71,6 +78,11 @@ if __name__ == "__main__":
     ############## test ####################
     args = get_arguments()
     IN = Inserter("email")
+
+    if args.test :
+        test_mail()
+        test_db()
+
     if args.account_setting:
 
         IN.user_setting()

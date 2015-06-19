@@ -539,3 +539,7 @@ class MailClient(BaseMail):
                 text = fp.read().encode("utf8")
 
         return text
+
+def test_mail():
+    print (" module load ok")
+    
